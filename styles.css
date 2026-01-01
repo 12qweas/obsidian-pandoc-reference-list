@@ -410,68 +410,62 @@ body {
 }
 
 /* ============================================================
-   NEW: Figure & Table Live Preview Styles (简洁蓝色文字版)
+   NEW: Figure & Table Live Preview (Fixed Layout)
    ============================================================ */
 
-/* 1. 基础公共样式 */
 .pandoc-widget {
-    display: inline-block;
-    padding: 0 1px;        /* 减少内边距，因为没有背景了 */
-    font-size: 0.95em;     /* 字体稍微大一点点，更易读 */
+    font-size: 0.95em;
     cursor: pointer;
     transition: all 0.2s ease;
-    vertical-align: baseline;
+    border-radius: 3px;
 }
 
-/* 2. 图片 (Figure) 样式 */
-
-/* 定义处：{#fig:id} -> 只是蓝色加粗字 */
+/* === 1. 定义处 (Definition) === */
+/* 例如图片下方的：Fig9 CZR模型 */
+/* 必须是块级元素 (Block)，才能居中独占一行 */
 .pandoc-fig.pandoc-def {
-    color: #1e88e5;                /* 鲜艳的蓝色 (Google Blue风格) */
-    background-color: transparent; /* 去掉背景 */
-    font-weight: bold;             /* 加粗以示区别 */
-    text-decoration: none;         /* 不需要下划线，保持清爽 */
-}
-
-/* 引用处：@fig:id -> 只是蓝色字 */
-.pandoc-fig.pandoc-ref {
-    color: #1e88e5;                /* 同上蓝色 */
-    background-color: transparent; /* 去掉背景 */
+    color: #1e88e5;
+    background-color: transparent;
+    font-weight: bold;      /* 定义处建议加粗 */
     text-decoration: none;
+
+    display: block;         /* 【关键】：块级显示 */
+    text-align: center;     /* 【关键】：居中对齐 */
+    width: 100%;
+    margin-top: 5px;
+    margin-bottom: 5px;
 }
 
-/* 3. 表格 (Table) 样式 - 为了区分，可以设为橙色或者也改成蓝色 */
-/* 如果你也希望表格是蓝色，把下面的 color 改成 #1e88e5 即可 */
+/* === 2. 引用处 (Reference) === */
+/* 例如正文中的：(Fig9) */
+/* 必须是行内元素 (Inline)，才能融入段落 */
+.pandoc-fig.pandoc-ref {
+    color: #1565c0;         /* 稍微深一点的蓝色 */
+    background-color: transparent;
+    text-decoration: none;
 
+    display: inline;        /* 【核心修复】：行内显示，不换行 */
+    text-align: left;       /* 恢复默认对齐 */
+    width: auto;            /* 宽度自适应 */
+    padding: 0 2px;
+}
+
+/* 鼠标悬停在引用上时 */
+.pandoc-fig.pandoc-ref:hover {
+    background-color: rgba(21, 101, 192, 0.08);
+    text-decoration: underline;
+}
+
+/* === 3. 表格样式 (Table) === */
 .pandoc-tbl.pandoc-def {
-    color: #f57c00;                /* 保持橙色区分，或改成蓝色 */
-    background-color: transparent; /* 去掉背景 */
+    color: #ef6c00;
+    display: block;
+    text-align: center;
+    width: 100%;
     font-weight: bold;
 }
 
 .pandoc-tbl.pandoc-ref {
-    color: #f57c00;
-    background-color: transparent; /* 去掉背景 */
-}
-
-/* 4. 鼠标悬停效果 (可选：鼠标放上去加个淡淡的背景) */
-.pandoc-widget:hover {
-    background-color: rgba(30, 136, 229, 0.1); /* 极淡的蓝色背景 */
-    border-radius: 3px;
-    text-decoration: underline;    /* 悬停时加下划线，更有链接感 */
-}
-
-/* 5. 自动补全菜单样式 (保持不变) */
-.pandoc-suggest-label {
-    font-weight: bold;
-    color: var(--text-accent);
-    display: inline-block;
-    min-width: 40px;
-}
-
-.pandoc-suggest-id {
-    color: var(--text-muted);
-    font-size: 0.8em;
-    font-family: var(--font-monospace);
-    float: right;
+    color: #ef6c00;
+    display: inline; /* 表格引用也必须是行内 */
 }
