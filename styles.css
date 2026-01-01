@@ -408,3 +408,70 @@ body {
   max-width: 500px;
   width: 95vw;
 }
+
+/* ============================================================
+   NEW: Figure & Table Live Preview Styles (简洁蓝色文字版)
+   ============================================================ */
+
+/* 1. 基础公共样式 */
+.pandoc-widget {
+    display: inline-block;
+    padding: 0 1px;        /* 减少内边距，因为没有背景了 */
+    font-size: 0.95em;     /* 字体稍微大一点点，更易读 */
+    cursor: pointer;
+    transition: all 0.2s ease;
+    vertical-align: baseline;
+}
+
+/* 2. 图片 (Figure) 样式 */
+
+/* 定义处：{#fig:id} -> 只是蓝色加粗字 */
+.pandoc-fig.pandoc-def {
+    color: #1e88e5;                /* 鲜艳的蓝色 (Google Blue风格) */
+    background-color: transparent; /* 去掉背景 */
+    font-weight: bold;             /* 加粗以示区别 */
+    text-decoration: none;         /* 不需要下划线，保持清爽 */
+}
+
+/* 引用处：@fig:id -> 只是蓝色字 */
+.pandoc-fig.pandoc-ref {
+    color: #1e88e5;                /* 同上蓝色 */
+    background-color: transparent; /* 去掉背景 */
+    text-decoration: none;
+}
+
+/* 3. 表格 (Table) 样式 - 为了区分，可以设为橙色或者也改成蓝色 */
+/* 如果你也希望表格是蓝色，把下面的 color 改成 #1e88e5 即可 */
+
+.pandoc-tbl.pandoc-def {
+    color: #f57c00;                /* 保持橙色区分，或改成蓝色 */
+    background-color: transparent; /* 去掉背景 */
+    font-weight: bold;
+}
+
+.pandoc-tbl.pandoc-ref {
+    color: #f57c00;
+    background-color: transparent; /* 去掉背景 */
+}
+
+/* 4. 鼠标悬停效果 (可选：鼠标放上去加个淡淡的背景) */
+.pandoc-widget:hover {
+    background-color: rgba(30, 136, 229, 0.1); /* 极淡的蓝色背景 */
+    border-radius: 3px;
+    text-decoration: underline;    /* 悬停时加下划线，更有链接感 */
+}
+
+/* 5. 自动补全菜单样式 (保持不变) */
+.pandoc-suggest-label {
+    font-weight: bold;
+    color: var(--text-accent);
+    display: inline-block;
+    min-width: 40px;
+}
+
+.pandoc-suggest-id {
+    color: var(--text-muted);
+    font-size: 0.8em;
+    font-family: var(--font-monospace);
+    float: right;
+}

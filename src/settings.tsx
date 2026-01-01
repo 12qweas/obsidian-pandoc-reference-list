@@ -24,6 +24,8 @@ export const DEFAULT_SETTINGS: ReferenceListSettings = {
   renderCitations: true,
   renderCitationsReadingMode: true,
   renderLinkCitations: true,
+  figurePrefix: '图',
+  tablePrefix: '表',
 };
 
 export interface ZoteroGroup {
@@ -51,6 +53,9 @@ export interface ReferenceListSettings {
   pullFromZotero?: boolean;
   zoteroPort?: string;
   zoteroGroups: ZoteroGroup[];
+
+  figurePrefix: string;
+  tablePrefix: string;
 }
 
 export class ReferenceListSettingsTab extends PluginSettingTab {
@@ -356,6 +361,35 @@ export class ReferenceListSettingsTab extends PluginSettingTab {
           .onChange((value) => {
             this.plugin.settings.showCitekeyTooltips = value;
             this.plugin.saveSettings();
+          })
+      );
+
+    new Setting(containerEl)
+      .setName('Figure Prefix')
+      .setDesc('Prefix for figures (e.g., "图", "Fig.", "Figure")')
+      .addText((text) =>
+        text
+          .setPlaceholder('图')
+          .setValue(this.plugin.settings.figurePrefix)
+          .onChange(async (value) => {
+            this.plugin.settings.figurePrefix = value;
+            await this.plugin.saveSettings();
+            // 触发刷新以应用更改
+            this.plugin.app.workspace.trigger('parse-style-settings');
+          })
+      );
+
+    new Setting(containerEl)
+      .setName('Table Prefix')
+      .setDesc('Prefix for tables (e.g., "表", "Tab.", "Table")')
+      .addText((text) =>
+        text
+          .setPlaceholder('表')
+          .setValue(this.plugin.settings.tablePrefix)
+          .onChange(async (value) => {
+            this.plugin.settings.tablePrefix = value;
+            await this.plugin.saveSettings();
+            this.plugin.app.workspace.trigger('parse-style-settings');
           })
       );
 
