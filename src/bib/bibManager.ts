@@ -89,7 +89,10 @@ function getScopedSettings(file: TFile): ScopedSettings {
   }
 
   // Checks whether the bibliography is a relative path and replaces the path with an absolute one
-  if (existsSync(path.join(getVaultRoot(), path.dirname(file.path), output.bibliography))){
+  if (
+    output.bibliography &&
+    existsSync(path.join(getVaultRoot(), path.dirname(file.path), output.bibliography))
+  ) {
     output.bibliography = path.join(getVaultRoot(), path.dirname(file.path), output.bibliography);
   }
 

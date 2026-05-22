@@ -13,7 +13,8 @@ import {
     EditorSuggestTriggerInfo,
     TFile,
     ItemView,
-    Notice
+    Notice,
+    editorLivePreviewField
 } from 'obsidian';
 import which from 'which';
 import { StateField, Extension, Range } from '@codemirror/state';
@@ -210,10 +211,18 @@ function scanDocument(doc: any): ScanResult {
 export const pandocFigTblField = StateField.define<DecorationSet>({
     create(state): DecorationSet { return Decoration.none; },
     update(oldDecorations, transaction): DecorationSet {
+
+        // 🛑 【核心修复】：直接使用 transaction.state 检查是否为实时预览模式
+        // 如果是纯源码模式 (Source Mode)，直接返回空装饰，不进行渲染
+        if (!transaction.state.field(editorLivePreviewField, false)) {
+            return Decoration.none;
+        }
+
         // 性能优化: 只有文档变动或选区变动时才重绘
         if (!transaction.docChanged && !transaction.selection) return oldDecorations;
         if (!pluginInstance) return oldDecorations;
 
+        // 在这里才声明 state 变量供下面使用
         const state = transaction.state;
         const widgets: Range<Decoration>[] = [];
         const { defs } = scanDocument(state.doc);
